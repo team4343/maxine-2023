@@ -9,6 +9,7 @@ import static frc.robot.constants.driveConstants.swerveConstants.*;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
@@ -72,7 +73,7 @@ public class SwerveModule extends SubsystemBase {
     this.gyro = gyro;
     this.id = id;
     
-    driveMotor.setNeutralMode(NeutralMode.Brake);
+    configDriveMotor();
     configAngleMotor();
 
     // converts position and velocity to radians and radians per sec respectivily
@@ -102,6 +103,15 @@ public class SwerveModule extends SubsystemBase {
      steerEncoder.setPosition(value);
   }
 
+  private void configDriveMotor() {
+    driveMotor.setNeutralMode(NeutralMode.Brake);
+    driveMotor.configFactoryDefault();
+    driveMotor.config_kF(0, 0.1);
+    driveMotor.config_kP(0, 0.03);  // Adjust PID constants as needed
+    driveMotor.config_kI(0, 0.0);
+    driveMotor.config_kD(0, 0.0);
+  }
+
 
   private void configAngleMotor() {
     angleMotor.restoreFactoryDefaults();
@@ -119,7 +129,6 @@ public class SwerveModule extends SubsystemBase {
     angleController.setD(0);
     angleController.setFF(0);
 
-
     updateSteerEncoder();
   }
 
@@ -134,10 +143,21 @@ public class SwerveModule extends SubsystemBase {
    
   }
 
-  public void setDrive(double value){
-    SmartDashboard.putNumber(String.valueOf(id), value);
-    driveMotor.set(ControlMode.PercentOutput, value * 0.2);
+  /**
+   * Set the drive motor to run at some meters per second.
+   */
+  public void setDrive(double linearSpeed){
+    double angularSpeed = linearSpeed / .0508;
+    double sensorUnitsPerRotation = 2048 * 8.14;
+    double sensorUnitsPer100Ms = (angularSpeed * sensorUnitsPerRotation / (2 * Math.PI)) / (10);
+    System.out.println("Sensor units per 100 ms: " + sensorUnitsPer100Ms);
+    System.out.println("Selected sensor velocity: " + driveMotor.getSelectedSensorVelocity());
+
+    driveMotor.set(ControlMode.Velocity, sensorUnitsPer100Ms);
+
+    // driveMotor.set(ControlMode.PercentOutput, linearSpeed);
   }
+
   public SwerveModuleState getState(){
     return new SwerveModuleState(0 , new Rotation2d((getAbsoluteEncoderRad() - rotationOffsetRad) % (Math.PI * 2)));
     
