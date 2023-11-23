@@ -36,7 +36,7 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   public void operatorDrive(double x, double y, double r){
-    ChassisSpeeds speeds = new ChassisSpeeds((x * 4), (y * 4), ((r * 2) / .0508));
+    ChassisSpeeds speeds = new ChassisSpeeds((x * 4), (y * 4), (r * 4));
     SwerveModuleState[] swerveModuleStates = kinematics.toSwerveModuleStates(speeds); 
 
     SwerveModuleState frontLeftState = swerveModuleStates[0];
