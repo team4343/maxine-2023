@@ -140,7 +140,6 @@ public class SwerveModule extends SubsystemBase {
       SmartDashboard.putNumber("Angle Final" + String.valueOf(id), value);
    
       angleMotor.getPIDController().setReference(value, ControlType.kPosition);
-   
   }
 
   /**
@@ -150,9 +149,7 @@ public class SwerveModule extends SubsystemBase {
     double angularSpeed = linearSpeed / .0508;
     double sensorUnitsPerRotation = 2048 * 8.14;
     double sensorUnitsPer100Ms = (angularSpeed * sensorUnitsPerRotation / (2 * Math.PI)) / (10);
-    System.out.println("Sensor units per 100 ms: " + sensorUnitsPer100Ms);
-    System.out.println("Selected sensor velocity: " + driveMotor.getSelectedSensorVelocity());
-
+   
     driveMotor.set(ControlMode.Velocity, sensorUnitsPer100Ms);
 
     // driveMotor.set(ControlMode.PercentOutput, linearSpeed);
@@ -164,6 +161,7 @@ public class SwerveModule extends SubsystemBase {
   }
 
   public void setState(SwerveModuleState state){
+    
     state = SwerveModuleState.optimize(state, Rotation2d.fromDegrees(steerEncoder.getPosition()));
       if (Math.abs(state.speedMetersPerSecond) < 0.1){
         angleMotor.set(0);

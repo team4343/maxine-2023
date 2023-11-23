@@ -10,6 +10,7 @@ import javax.print.event.PrintJobListener;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -36,9 +37,12 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   public void operatorDrive(double x, double y, double r){
-    ChassisSpeeds speeds = new ChassisSpeeds((x * 4), (y * 4), (r * 4));
+    // System.out.println(gyro.getAngle());
+    ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds((x * 4), (y * 4), (r * Math.PI * 2) * 1, Rotation2d.fromDegrees(gyro.getAngle())); 
+    
     SwerveModuleState[] swerveModuleStates = kinematics.toSwerveModuleStates(speeds); 
-
+    
+    
     SwerveModuleState frontLeftState = swerveModuleStates[0];
     SwerveModuleState frontRightState = swerveModuleStates[1];
     SwerveModuleState backLeftState = swerveModuleStates[2];
