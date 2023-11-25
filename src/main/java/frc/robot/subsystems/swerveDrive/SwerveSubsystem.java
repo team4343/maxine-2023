@@ -1,12 +1,10 @@
-
+// Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems.swerveDrive;
 
-import static frc.robot.constants.driveConstants.swerveConstants.*;
-
-import javax.print.event.PrintJobListener;
+import static frc.robot.constants.DriveConstants.swerveConstants.*;
 
 import com.kauailabs.navx.frc.AHRS;
 
@@ -31,17 +29,20 @@ public class SwerveSubsystem extends SubsystemBase {
     gyro.reset();
   }
 
-  /** Creates a new swerveSubsystem. */
+  /** Creates a new SwerveSubsystem. */
   public SwerveSubsystem() {
     zeroGyro();
   }
 
-  public void operatorDrive(double x, double y, double r){
-    // System.out.println(gyro.getAngle());
+  /*
+   * Drive the robot given some field-relative x, y, and r values.
+   */
+  public void driveFieldRelative(double x, double y, double r) {
+    // TODO: https://socratic.org/questions/if-you-have-10-8-meters-per-second-how-do-you-convert-that-to-radians-per-second
+    //       use this to define rotations in m/s instead of rad/s.
     ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds((x * 4), (y * 4), (r * Math.PI * 2) * 1, Rotation2d.fromDegrees(gyro.getAngle())); 
     
     SwerveModuleState[] swerveModuleStates = kinematics.toSwerveModuleStates(speeds); 
-    
     
     SwerveModuleState frontLeftState = swerveModuleStates[0];
     SwerveModuleState frontRightState = swerveModuleStates[1];
@@ -56,6 +57,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    // TODO: update odometry based on swerve values. May not be necessary.
+    //       Also consider where visual odometry will be going.
   }
 }

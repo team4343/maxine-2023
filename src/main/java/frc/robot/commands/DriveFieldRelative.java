@@ -4,18 +4,17 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.swerveDrive.SwerveSubsystem;
 
-public class operatorDriveCommand extends CommandBase {
+public class DriveFieldRelative extends CommandBase {
   SwerveSubsystem drivetrain;
   XboxController controller;
 
   /** Creates a new operatorDriveCommand. */
-  public operatorDriveCommand(SwerveSubsystem drivetrain, XboxController controller) {
+  public DriveFieldRelative(SwerveSubsystem drivetrain, XboxController controller) {
     this.drivetrain = drivetrain;
     this.controller = controller;
 
@@ -29,7 +28,7 @@ public class operatorDriveCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    drivetrain.operatorDrive(controller.getLeftX(),controller.getLeftY(),controller.getRightX());
+    drivetrain.driveFieldRelative(controller.getLeftX(),controller.getLeftY(),controller.getRightX());
     SmartDashboard.putNumber("Controller LX", controller.getLeftX());
     SmartDashboard.putNumber("Controller LY",- controller.getLeftY());
     SmartDashboard.putNumber("Controller RX", controller.getRightX());
