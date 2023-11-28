@@ -9,12 +9,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.swerveDrive.SwerveSubsystem;
 
-public class operatorDriveCommand extends CommandBase {
+public class DriveFieldRelative extends CommandBase {
   SwerveSubsystem drivetrain;
   XboxController controller;
 
   /** Creates a new operatorDriveCommand. */
-  public operatorDriveCommand(SwerveSubsystem drivetrain, XboxController controller) {
+  public DriveFieldRelative(SwerveSubsystem drivetrain, XboxController controller) {
     this.drivetrain = drivetrain;
     this.controller = controller;
 
@@ -31,7 +31,7 @@ public class operatorDriveCommand extends CommandBase {
     var leftX = (Math.abs(controller.getLeftX()) <= 0.05) ? 0 : controller.getLeftX();
     var leftY = (Math.abs(controller.getLeftY()) <= 0.05) ? 0 : controller.getLeftY();
     var rightX = (Math.abs(controller.getRightX()) <= 0.05) ? 0 : controller.getRightX();
-    drivetrain.operatorDrive(leftX, leftY, rightX);
+    drivetrain.driveFieldRelative(leftX, leftY, rightX);
     SmartDashboard.putNumber("Controller LX", controller.getLeftX());
     SmartDashboard.putNumber("Controller LY",- controller.getLeftY());
     SmartDashboard.putNumber("Controller RX", controller.getRightX());

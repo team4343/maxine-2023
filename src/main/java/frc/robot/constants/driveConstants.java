@@ -3,7 +3,7 @@ package frc.robot.constants;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 
-public class driveConstants {
+public class DriveConstants {
     public static class swerveConstants {
         public static final int driveLeftFront = 8;
         public static final int driveRightFront = 7;
