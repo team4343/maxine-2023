@@ -4,7 +4,6 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -29,7 +28,10 @@ public class operatorDriveCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    drivetrain.operatorDrive(controller.getLeftX(),controller.getLeftY(),controller.getRightX());
+    var leftX = (Math.abs(controller.getLeftX()) <= 0.05) ? 0 : controller.getLeftX();
+    var leftY = (Math.abs(controller.getLeftY()) <= 0.05) ? 0 : controller.getLeftY();
+    var rightX = (Math.abs(controller.getRightX()) <= 0.05) ? 0 : controller.getRightX();
+    drivetrain.operatorDrive(leftX, leftY, rightX);
     SmartDashboard.putNumber("Controller LX", controller.getLeftX());
     SmartDashboard.putNumber("Controller LY",- controller.getLeftY());
     SmartDashboard.putNumber("Controller RX", controller.getRightX());
